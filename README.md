@@ -1,4 +1,4 @@
-#React Estudos
+# React Estudos
 
 
-npm install create-react-app
+```npm install create-react-app```
