@@ -20,7 +20,7 @@ class FormularioAutor extends Component {
     enviaForm(evento) {
         evento.preventDefault();
         $.ajax({
-          url: 'https://cdc-react.herokuapp.com/api/autores',
+          url:'https://cdc-react.herokuapp.com/api/autores',
           contentType: 'application/json',
           dataType:'json',
           type:'post',
@@ -126,7 +126,7 @@ export default class AutorBox extends Component {
                 </div>
                 <br/>
                 <div className="content" id="content">
-                    <FormularioAutor callbackAtualizaListagem={this.atualizaListagem}/>
+                    <FormularioAutor/>
                     <TabelaAutores lista={this.state.lista}/>
                 </div>
             </div>

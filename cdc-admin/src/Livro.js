@@ -11,23 +11,23 @@ class FormularioLivro extends Component {
     constructor() {
         super();
         this.state = {titulo:'',preco:'',autorId:''};
-    this.enviaForm = this.enviaForm.bind(this);
-    this.setTitulo = this.setTitulo.bind(this);
-    this.setPreco = this.setPreco.bind(this);
-    this.setAutorId = this.setAutorId.bind(this);
+        this.enviaForm = this.enviaForm.bind(this);
+        this.setTitulo = this.setTitulo.bind(this);
+        this.setPreco = this.setPreco.bind(this);
+        this.setAutorId = this.setAutorId.bind(this);
     }
 
     enviaForm(evento){
         evento.preventDefault();
         $.ajax({
-          url:'http://localhost:8080/api/livros',
-          contentType:'application/json',
+          url:'https://cdc-react.herokuapp.com/api/livros',
+          contentType: 'application/json',
           dataType:'json',
           type:'post',
           data: JSON.stringify({titulo:this.state.titulo,preco:this.state.preco,autorId:this.state.autorId}),
-          success: function(novaListagem){
-            //PubSub.publish('atualiza-lista-livros',novaListagem);
-            this.setState({titulo:'',preco:'',autorId:''});
+          success: function(resposta){
+              this.PubSub.publish('atualiza-lista-livros',resposta);
+              //this.setState({titulo:'',preco:'',autorId:''});
           }.bind(this),
           error: function(resposta){
             if(resposta.status === 400) {
@@ -41,7 +41,7 @@ class FormularioLivro extends Component {
     }
 
     setTitulo(evento){
-        this.setState({Titulo:evento.target.value});
+        this.setState({titulo:evento.target.value});
     }
     
     setPreco(evento){
@@ -85,7 +85,7 @@ class TabelaLivros extends Component {
                                 <tr key={livro.id}>
                                     <td>{livro.titulo}</td>
                                     <td>{livro.preco}</td>
-                                    <td></td>
+                                    <td>{livro.autor.nome}</td>
                                 </tr>
                             );
                         })
@@ -106,7 +106,7 @@ export default class LivroBox extends Component {
 
     componentDidMount(){
         $.ajax({
-            url: 'https://cdc-react.herokuapp.com/api/autores',
+            url: 'https://cdc-react.herokuapp.com/api/livros',
             dataType: 'json',
             success:function(resposta){
                 this.setState({lista:resposta});
