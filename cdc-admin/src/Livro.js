@@ -3,7 +3,7 @@ import $ from 'jquery';
 import InputCustomizado from './componentes/InputCustomizado';
 import ButtonCustomizado from './componentes/ButtonCustomizado';
 import Pubsub from 'pubsub-js';
-import pubsub2 from 'pubsub-js';
+import pubsub2 from 'pubsub-js'; //esta causando um erro no evento ajax ??? foi criado outro
 import TratadorErros from './TratadorErros';
 
 

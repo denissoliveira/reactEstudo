@@ -49,3 +49,7 @@ npm start
 ```sh
 localhost:8080/api/autores
 ```
+
+
+----------------------------------------
+Produção: npm run build

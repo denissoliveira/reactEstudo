@@ -40,6 +40,12 @@ class FormularioAutor extends Component {
         });
     }
 
+    salvaAlteracao(nomeInput,evento){
+        var campo = {}; //vria um json
+        campo[nomeInput] = evento.target.value; //atributo recebe valor
+        this.setState(campo);
+    }
+
     setNome(evento){
         this.setState({nome:evento.target.value});
     }
@@ -56,9 +62,9 @@ class FormularioAutor extends Component {
         return(
             <div className="pure-form pure-form-aligned">
                 <form className="pure-form pure-form-aligned" onSubmit={this.enviaForm} method="post">
-                    <InputCustomizado id="nome" type="text" name="nome" value={this.state.nome} onChange={this.setNome} label="Nome" />
-                    <InputCustomizado id="email" type="email" name="email" value={this.state.email} onChange={this.setEmail} label="E-mail"/>
-                    <InputCustomizado id="senha" type="password" name="senha" value={this.state.senha} onChange={this.setSenha} label="Senha"/>
+                    <InputCustomizado id="nome" type="text" name="nome" value={this.state.nome} onChange={this.salvaAlteracao.bind(this,'nome')} label="Nome" />
+                    <InputCustomizado id="email" type="email" name="email" value={this.state.email} onChange={this.salvaAlteracao.bind(this,'email')} label="E-mail"/>
+                    <InputCustomizado id="senha" type="password" name="senha" value={this.state.senha} onChange={this.salvaAlteracao.bind(this,'senha')} label="Senha"/>
                     <ButtonCustomizado label="Gravar" />
                 </form>             
             </div>  
