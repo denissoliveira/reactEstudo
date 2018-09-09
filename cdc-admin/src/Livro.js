@@ -27,7 +27,7 @@ class FormularioLivro extends Component {
           data: JSON.stringify({titulo:this.state.titulo,preco:this.state.preco,autorId:this.state.autorId}),
           success: function(resposta){
               this.PubSub.publish('atualiza-lista-livros',resposta);
-              //this.setState({titulo:'',preco:'',autorId:''});
+              this.setState({titulo:'',preco:'',autorId:''});
           }.bind(this),
           error: function(resposta){
             if(resposta.status === 400) {
@@ -53,12 +53,21 @@ class FormularioLivro extends Component {
     }
 
     render(){
+        var autores = this.props.autores.map(function(autor){
+            return <option key={autor.id} value={autor.id}>{autor.nome}</option>;
+        });
         return(
             <div className="pure-form pure-form-aligned">
                 <form className="pure-form pure-form-aligned" onSubmit={this.enviaForm} method="post">
                     <InputCustomizado id="titulo" type="text" name="titulo" value={this.state.titulo} onChange={this.setTitulo} label="Título"/>                                              
                     <InputCustomizado id="Preco" type="text" name="preco" value={this.state.preco} onChange={this.setPreco} label="Preço"/>                                              
-                    <InputCustomizado id="autorId" type="text" name="autorId" value={this.state.autorId} onChange={this.setAutorId} label="AutorId"/>         
+                    <div className="pure-control-group">
+                        <label htmlFor="autorId">Autores</label>
+                        <select value={this.state.autorId} id="autorId" name="autorId" onChange={this.setAutorId}>
+                            <option value="">Selecione</option>
+                            {autores}
+                        </select>
+                    </div>
                     <ButtonCustomizado label="Gravar" />
                 </form>             
             </div>  
@@ -101,7 +110,7 @@ export default class LivroBox extends Component {
 
     constructor() {
         super();
-        this.state = {lista : []};
+        this.state = {lista : [],autores:[]};
     }
 
     componentDidMount(){
@@ -112,6 +121,15 @@ export default class LivroBox extends Component {
                 this.setState({lista:resposta});
                 }.bind(this)
         });
+
+        $.ajax({
+            url: "https://cdc-react.herokuapp.com/api/autores",
+            dataType: 'json',
+            success: function(data) {
+                this.setState({autores: data});
+                }.bind(this)
+        });
+
         Pubsub.subscribe('atualiza-lista-livros',function(topico,novaLista){
             this.setState({lista:novaLista});
         }.bind(this));
@@ -125,7 +143,7 @@ export default class LivroBox extends Component {
                 </div>
                 <br/>
                 <div className="content" id="content">
-                    <FormularioLivro callbackAtualizaListagem={this.atualizaListagem}/>
+                    <FormularioLivro autores={this.state.autores}/>
                     <TabelaLivros lista={this.state.lista}/>
                 </div>
             </div>
