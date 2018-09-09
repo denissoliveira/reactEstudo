@@ -26,7 +26,6 @@ class FormularioAutor extends Component {
           type:'post',
           data: JSON.stringify({nome:this.state.nome,email:this.state.email,senha:this.state.senha}),
           success: function(resposta){
-            //this.props.callbackAtualizaListagem(resposta);
             Pubsub.publish('atualiza-lista-autores',resposta);
             this.setState({nome:'',email:'',senha:''});
           }.bind(this),

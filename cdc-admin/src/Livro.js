@@ -3,6 +3,7 @@ import $ from 'jquery';
 import InputCustomizado from './componentes/InputCustomizado';
 import ButtonCustomizado from './componentes/ButtonCustomizado';
 import Pubsub from 'pubsub-js';
+import pubsub2 from 'pubsub-js';
 import TratadorErros from './TratadorErros';
 
 
@@ -26,8 +27,8 @@ class FormularioLivro extends Component {
           type:'post',
           data: JSON.stringify({titulo:this.state.titulo,preco:this.state.preco,autorId:this.state.autorId}),
           success: function(resposta){
-              this.PubSub.publish('atualiza-lista-livros',resposta);
-              this.setState({titulo:'',preco:'',autorId:''});
+            pubsub2.publish('atualiza-lista-livros',resposta);
+            this.setState({titulo:'',preco:'',autorId:''});
           }.bind(this),
           error: function(resposta){
             if(resposta.status === 400) {
@@ -35,7 +36,7 @@ class FormularioLivro extends Component {
             }
         },
           beforeSend: function(){
-              Pubsub.publish("limpa-erros",{});
+            Pubsub.publish("limpa-erros",{});
           }
         });
     }
